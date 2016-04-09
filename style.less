@@ -1,0 +1,44 @@
+@lightblue: #6cf;
+@darkgray: #888;
+
+body {
+  background: #eee;
+  font-size: 160%;
+  color: @darkgray;
+}
+
+.navbar {
+  border: 0;
+}
+
+.navbar-default {
+  background: #fff;
+}
+
+.white {
+  background: #fff;
+  padding: 10px;
+}
+
+input[type=submit] {
+  background: none;
+  border: 2px solid @lightblue;
+  color: @lightblue;
+  padding: 5px 8px;
+  transition: background 0.2s, color 0.2s;
+  &:hover {
+    background: @lightblue;
+    color: #fff;
+    transition: background 0.2s, color 0.2s;
+  }
+}
+
+form {
+  input[type=email], input[type=password], input[type=text] {
+    margin-bottom: 12px;
+    border: 1px solid @darkgray;
+  }
+  label {
+    margin-bottom: 0;
+  }
+}
