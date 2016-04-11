@@ -19,8 +19,10 @@ app.get('/', function(req, res) {
 
     assert.equal(null, err);
 
+    var msg = req.query.msg;
+
     var query = {};
-    var projection = {"_id": 0, "firstName": 1};
+    var projection = {"_id": 0, "firstName": 1, "lastName": 1, "instruments": 1, "photo": 1, "link": 1};
     var cursor = db.collection('users').find(query, projection);
     cursor.limit(3);
 
@@ -63,12 +65,12 @@ app.post('/login', function(req, res) {
             res.redirect("/profile");
           } else {
             console.log("Password was incorrect")
-            res.redirect("/");
+            res.redirect("/?msg=1");
           }
         } else if (count==0) {
           console.log("No user found with that email.");
           db.close();
-          res.redirect("/");
+          res.redirect("/?msg=2");
         } else {
           console.log("What the hell.");
           db.close();
@@ -83,9 +85,11 @@ app.post('/login', function(req, res) {
 app.get('/profile', function(req, res) {
   MongoClient.connect('mongodb://localhost:27017/bandjo', function(err, db) {
 
-
-
   });
+});
+
+app.get('/signup', function(req, res) {
+  res.render('signup');
 });
 
 app.post('/signup', function(req, res) {

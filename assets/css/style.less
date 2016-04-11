@@ -1,12 +1,53 @@
 @lightblue: #6cf;
 @darkgray: #888;
 
+/* Globals */
 body {
   background: #eee;
   font-size: 160%;
   color: @darkgray;
 }
 
+a {
+  color: @lightblue;
+  &:hover {
+    color: @lightblue;
+  }
+}
+
+.blue-btn {
+  background: none;
+  border: 2px solid @lightblue;
+  color: @lightblue;
+  padding: 5px 8px;
+  text-decoration: none;
+  display: inline-block;
+  margin-right: 15px;
+  box-sizing: content-box;
+  transition: background 0.2s, color 0.2s;
+  &:hover {
+    background: @lightblue;
+    color: #fff;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+}
+
+input[type=email], input[type=password], input[type=text] {
+  margin: 0 0 12px 0;
+  border: 1px solid #ddd;
+  padding: 2px 5px;
+  line-height: 160%;
+  width: 100%;
+  max-width: 250px;
+}
+
+.white {
+  background: #fff;
+  padding: 10px;
+}
+
+/* Header */
 .navbar {
   border: 0;
 }
@@ -15,29 +56,15 @@ body {
   background: #fff;
 }
 
-.white {
-  background: #fff;
-  padding: 10px;
+form#login-form input[type=email], form#login-form input[type=password]{
+  max-width: 100%;
 }
 
-input[type=submit] {
-  background: none;
-  border: 2px solid @lightblue;
-  color: @lightblue;
-  padding: 5px 8px;
-  transition: background 0.2s, color 0.2s;
-  &:hover {
-    background: @lightblue;
-    color: #fff;
-    transition: background 0.2s, color 0.2s;
-  }
+form#signup-form table tr td:first-child {
+  padding-right: 10px;
 }
 
-form {
-  input[type=email], input[type=password], input[type=text] {
-    margin-bottom: 12px;
-    border: 1px solid @darkgray;
-  }
+form#signup-form, form#login-form {
   label {
     margin-bottom: 0;
   }

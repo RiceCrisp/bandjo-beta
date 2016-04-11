@@ -43,6 +43,13 @@ module.exports = function(grunt) {
         }]
       }
     },
+    express: {
+      target: {
+        options: {
+          script: "app.js"
+        }
+      }
+    },
     watch: {
       css: {
         files: ["assets/css/*.less"],
@@ -51,13 +58,22 @@ module.exports = function(grunt) {
       js: {
         files: ["Gruntfile.js", "assets/js/*.js"],
         tasks: ["jshint:target", "uglify:target"]
+      },
+      server: {
+        files: ["app.js"],
+        tasks: ["express:target"],
+        options: {
+          atBegin: true,
+          spawn: false
+        }
       }
     }
   });
   grunt.loadNpmTasks("grunt-contrib-less");
   grunt.loadNpmTasks("grunt-contrib-uglify");
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks("grunt-express-server");
   grunt.loadNpmTasks("grunt-contrib-watch");
 
-  grunt.registerTask("default", ["less", "jshint", "uglify"]);
+  grunt.registerTask("default", ["less", "jshint", "uglify", "express"]);
 };
