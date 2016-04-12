@@ -6,8 +6,7 @@ var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var crypto = require('crypto');
 
-app.engine('html', engines.handlebars);
-app.set('view engine', 'html');
+app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
 
 app.use(express.static('assets'));
@@ -21,20 +20,23 @@ app.get('/', function(req, res) {
 
     var msg = req.query.msg;
 
+    var results;
     var query = {};
-    var projection = {"_id": 0, "firstName": 1, "lastName": 1, "instruments": 1, "photo": 1, "link": 1};
+    var projection = {"_id": 0, "firstName": 1, "lastName": 1, "instruments": 1, "photo": 1};
     var cursor = db.collection('users').find(query, projection);
-    cursor.limit(3);
+    cursor.limit(1);
 
     cursor.forEach(
       function(doc) {
-        res.render('home', {'results': doc});
+        results = doc;
       }, function(err) {
           assert.equal(err, null);
+          res.render('home', {'results': results});
           console.log("Our query was: " + JSON.stringify(query));
           return db.close();
       }
     );
+
   });
 });
 

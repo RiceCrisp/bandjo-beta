@@ -32,29 +32,6 @@
     </nav>
   </header>
   <main class="container">
-    <div class="row">
-      <div class="col-sm-4">
-        <form id="login-form" class="white" action="/login" method="post">
-          <label for="email">Email</label><br>
-          <input id="email" name="email" type="email"><br>
-          <label for="password">Password</label><br>
-          <input id="password" name="password" type="password"><br>
-          <input id="remember" name="remember" type="checkbox">
-          <label for="remember">Remember me</label><br>
-          <input id="forgot" name="forgot" type="checkbox">
-          <label style="margin-bottom: 12px" for="forgot">Forgot password</label><br>
-          <input class="blue-btn" type="submit" value="Log In"><a href="/signup" class="blue-btn">Sign Up</a>
-        </form>
-      </div>
-      <div class="col-sm-8">
-        <div class="white">
-          <h2>Latest Users</h2>
-          <img style="float: left; background: black; margin-right: 10px;" class="img-responsive" width="100" src="{{results.photo}}" alt="{{results.firstName}} {{results.lastName}}"/>
-          <a href="/{{results.link}}"><h3>{{results.firstName}} {{results.lastName}}</h3></a>
-          <p><b>Instruments:</b>{{results.instruments}}</p>
-        </div>
-      </div>
-    </div>
   </main>
   <footer>
   </footer>
