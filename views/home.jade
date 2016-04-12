@@ -7,6 +7,8 @@ html(lang='en')
       div.row
         div.col-sm-4
           form#login-form.white(action='/login', method='post')
+            if errMsg
+              p.bg-info=errMsg
             label(for='email')="Email"
             br
             input#email(name='email', type='email')

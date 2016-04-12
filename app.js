@@ -18,7 +18,15 @@ app.get('/', function(req, res) {
 
     assert.equal(null, err);
 
-    var msg = req.query.msg;
+    var errMsg;
+    switch(req.query.err) {
+      case 'password':
+        errMsg = "Incorrect password"
+        break;
+      case 'email':
+        errMsg = "Incorrect email"
+        break;
+    }
 
     var results;
     var query = {};
@@ -31,7 +39,7 @@ app.get('/', function(req, res) {
         results = doc;
       }, function(err) {
           assert.equal(err, null);
-          res.render('home', {'results': results});
+          res.render('home', {'results': results, 'errMsg': errMsg});
           console.log("Our query was: " + JSON.stringify(query));
           return db.close();
       }
@@ -47,6 +55,7 @@ app.post('/login', function(req, res) {
 
     var email = req.body.email;
     var password = req.body.password;
+    //var password = crypto.createHash("sha1").update(req.body.password).digest('hex');
     var count = 0;
 
     var query = { "email": email };
@@ -67,12 +76,12 @@ app.post('/login', function(req, res) {
             res.redirect("/profile");
           } else {
             console.log("Password was incorrect")
-            res.redirect("/?msg=1");
+            res.redirect("/?err=password");
           }
         } else if (count==0) {
           console.log("No user found with that email.");
           db.close();
-          res.redirect("/?msg=2");
+          res.redirect("/?err=email");
         } else {
           console.log("What the hell.");
           db.close();
