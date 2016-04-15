@@ -11,8 +11,23 @@
     "state": "IL",
     "zip": "60618"
   },
-  "photo": "http://blakeboucher.com/wordpress/wp-content/uploads/2015/08/blake.png",
   "link": "blakeboucher",
-  "instruments": ["piano", "vocals", "drums"],
-  "soundcloud": "https://soundcloud.com/blakeboucher"
+  "photo": "http://blakeboucher.com/wordpress/wp-content/uploads/2015/08/blake.png",
+  "soundcloud": "https://soundcloud.com/blakeboucher",
+  "instruments": [
+    {"piano": {
+      "skill": "Expert",
+      "years": 15
+    }},
+    {"vocals": {
+      "skill": "Intermediate",
+      "years": 6
+    }},
+    {"drums": {
+      "skill": "Novice",
+      "years": 4
+    }}
+  ],
+  "genre": ["pop", "easy listening"],
+  "bands": ["Ben Folds", "John Mayer", "Sufjan Stevens", "MuteMath", "Father John Misty"]
 }
