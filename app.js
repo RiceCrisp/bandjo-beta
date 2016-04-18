@@ -22,6 +22,10 @@ app.use(express.static('assets'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.locals.ucfirst = function(value){
+    return value.charAt(0).toUpperCase() + value.slice(1);
+};
+
 MongoClient.connect(dbUrl, function(err, db) {
 
   "use strict";
@@ -86,17 +90,19 @@ MongoClient.connect(dbUrl, function(err, db) {
   });
 
   app.use(function(req, res, next) {
-    if (req.session.testing==null) {
+    if (req.session.userID==null) {
       console.log('Not logged in.');
       res.redirect("/?err=login");
       return;
     }
-    console.log(req.session.testing);
+    console.log("UserID: "+req.session.userID);
     next();
   });
 
   app.get('/profile', function(req, res) {
-    res.render('profile');
+    am.getUser(db, req.session.userID, function(doc2) {
+      res.render('profile', {"user": doc2});
+    });
   });
 
   app.get('/signup', function(req, res) {
