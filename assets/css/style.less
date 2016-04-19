@@ -1,4 +1,5 @@
 @lightblue: #6cf;
+@lightgray: #ddd;
 @darkgray: #888;
 
 /* Globals */
@@ -13,6 +14,11 @@ a {
   &:hover {
     color: @lightblue;
   }
+}
+
+h3 {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
 }
 
 .blue-btn {
@@ -77,6 +83,18 @@ form#signup-form, form#login-form {
 }
 
 /* Profile */
+div#map {
+  height: 100px;
+}
+
+div.instruments {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
 div.instrument {
-  border: 1px solid @darkgray;
+  border: 1px solid @lightgray;
+  width: 120px;
+  padding: 5px;
 }

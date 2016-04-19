@@ -4,11 +4,8 @@ header
       div.navbar-header
         a.navbar-brand(href='/')="Bandjo"
       div.navbar-right
-        button.dropdown-toggle.nav.navbar-nav.navbar-right(type='button' data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false')="Log off "
-          span.caret
-        ul.dropdown-menu
-          li
-            a(href='#')="Link"
-          li
-            a(href='#')="Link"
-      
+        - if (loggedIn) {
+          a.btn.btn-default.navbar-btn(href='/')="Log Off"
+        - } else {
+          a.btn.btn-default.navbar-btn(href='/')="Log In"
+        - }

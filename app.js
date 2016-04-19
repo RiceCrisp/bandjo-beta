@@ -8,7 +8,7 @@ var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var crypto = require('crypto');
 var helmet = require('helmet');
-var am = require('./modules/account_manager');
+var am = require('./assets/js/account_manager');
 
 var dbUrl = 'mongodb://localhost:27017/bandjo';
 
@@ -31,10 +31,16 @@ MongoClient.connect(dbUrl, function(err, db) {
   "use strict";
   assert.equal(null, err);
 
+  app.use('*', function(req, res, next) {
+    if (req.session.userID) {
+      res.locals.loggedIn = true;
+    } else {
+      res.locals.loggedIn = false;
+    }
+    next();
+  });
+
   app.get('/', function(req, res) {
-
-    console.log('homepage');
-
     var errMsg = "";
     switch(req.query.err) {
       case 'login':
@@ -48,13 +54,11 @@ MongoClient.connect(dbUrl, function(err, db) {
       default:
         break;
     }
-
     var results;
     var query = {};
     var projection = {"_id": 0, "firstName": 1, "lastName": 1, "instruments": 1, "photo": 1};
     var cursor = db.collection('users').find(query, projection);
     cursor.limit(1);
-
     cursor.forEach(
       function(doc) {
         results = doc;
@@ -63,11 +67,9 @@ MongoClient.connect(dbUrl, function(err, db) {
           res.render('home', {'results': results, 'errMsg': errMsg, 'email': req.query.email});
       }
     );
-
   });
 
   app.post('/login', function(req, res) {
-
     var password = req.body.password;
     //var password = crypto.createHash("sha1").update(req.body.password).digest('hex');
     am.manualLogin(db, req.body.email, password, function(res2, u_id) {
@@ -86,9 +88,28 @@ MongoClient.connect(dbUrl, function(err, db) {
           res.redirect("/"); break;
       }
     });
-
   });
 
+  app.get('/profile/:id', function(req, res) {
+    am.getUser(db, req.params.id, function(err2, doc2) {
+      if (err2) {
+        assert.equal(null, err2);
+      }
+      res.render('profile', {"user": doc2});
+    });
+  });
+
+  app.get('/profile', function(req, res) {
+    if (req.session.userID) {
+      am.getUser(db, req.session.userID, function(err2, doc2) {
+        res.render('profile', {"user": doc2});
+      });
+    } else {
+      res.redirect("/");
+    }
+  });
+
+  // Public urls go before here
   app.use(function(req, res, next) {
     if (req.session.userID==null) {
       console.log('Not logged in.');
@@ -99,18 +120,11 @@ MongoClient.connect(dbUrl, function(err, db) {
     next();
   });
 
-  app.get('/profile', function(req, res) {
-    am.getUser(db, req.session.userID, function(doc2) {
-      res.render('profile', {"user": doc2});
-    });
-  });
-
   app.get('/signup', function(req, res) {
     res.render('signup');
   });
 
   app.post('/signup', function(req, res) {
-
     var newInfo = {
       'firstName': req.body.firstName,
       'lastName': req.body.lastName,
@@ -118,7 +132,6 @@ MongoClient.connect(dbUrl, function(err, db) {
       'joinDate': new Date(),
       'password': crypto.createHash("sha1").update(req.body.password).digest('hex')
     }
-
     am.createUser(db, newInfo, function(res2) {
       switch(res2) {
       case 1:
@@ -127,7 +140,6 @@ MongoClient.connect(dbUrl, function(err, db) {
         res.redirect("/signup/?err=fail"); break;
       }
     });
-
   });
 
   app.get('/logout', function(req, res) {

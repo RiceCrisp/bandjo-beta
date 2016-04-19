@@ -25,7 +25,7 @@ module.exports = function(grunt) {
           }
         },
         files: {
-            src: ["Gruntfile.js", "modules/*-min.js"]
+            src: ["Gruntfile.js", "modules/*-min.js", "assets/js/*-min.js"]
         }
       }
     },
@@ -36,9 +36,9 @@ module.exports = function(grunt) {
         },
         files: [{
             expand: true,
-            cwd: "modules",
+            cwd: "assets/js",
             src: "*.js",
-            dest: "modules",
+            dest: "assets/js",
             ext: ".min.js"
         }]
       }
@@ -56,7 +56,7 @@ module.exports = function(grunt) {
         tasks: ["less:target"]
       },
       js: {
-        files: ["Gruntfile.js", "modules/*.js"],
+        files: ["Gruntfile.js", "assets/js/*.js"],
         tasks: ["uglify:target", "jshint:target"]
       },
       server: {
