@@ -126,3 +126,33 @@ div.instrument {
   padding: 5px;
   text-align: center;
 }
+
+ul.boxes {
+  padding: 0;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  li {
+    list-style: none;
+    display: inline-block;
+    min-width: 100px;
+    border: 1px solid @lightgray;
+    margin: 0 10px 10px 0;
+    padding: 10px;
+    text-align: center;
+    background: #fff;
+    transition: background 0.2s;
+    &:hover {
+      cursor: pointer;
+      background: @lightgray;
+      transition: background 0.2s;
+    }
+  }
+}
+
+footer {
+  background: #fff;
+  margin-top: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
