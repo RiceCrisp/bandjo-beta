@@ -16,11 +16,6 @@ a {
   }
 }
 
-h3 {
-  border-bottom: 1px solid #eee;
-  padding-bottom: 5px;
-}
-
 .blue-btn {
   background: none;
   border: 2px solid @lightblue;
@@ -83,6 +78,38 @@ form#signup-form, form#login-form {
 }
 
 /* Profile */
+img.profile-pic {
+  border: 1px solid @lightgray;
+}
+
+section {
+  margin-bottom: 20px;
+  header {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
+    h2, h3, h4 {
+      display: inline-block;
+      margin: 0 15px 0 0;
+    }
+  }
+}
+
+svg.pencil {
+  background: #fff;;
+  &:hover {
+    cursor: pointer;
+  }
+  &:hover path {
+    fill: @darkgray;
+    transition: fill 0.2s;
+    cursor: pointer;
+  }
+  path {
+    fill: @lightgray;
+    transition: fill 0.2s;
+  }
+}
+
 div#map {
   height: 100px;
 }
@@ -97,4 +124,5 @@ div.instrument {
   border: 1px solid @lightgray;
   width: 120px;
   padding: 5px;
+  text-align: center;
 }

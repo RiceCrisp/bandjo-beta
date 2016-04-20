@@ -9,29 +9,56 @@ html(lang='en')
           h2=user.firstName+" "+user.lastName
       div.row
         div.col-sm-4
-          img.img-responsive(src=user.photo, alt=user.firstName, style='background: black')
+          section
+            img.img-responsive.profile-pic(src=user.photo, alt=user.firstName, style='background: black')
+            - if (edit)
+              svg.pencil(width='26' height='26' viewBox='0 0 24 24' style='position: absolute; top: 1; right: 16px; padding: 3px;')
+                path(d='M19.769 9.923l-12.642 12.639-7.127 1.438 1.438-7.128 12.641-12.64 5.69 5.691zm1.414-1.414l2.817-2.82-5.691-5.689-2.816 2.817 5.69 5.692z')
+          section
+            header
+              h4="Contacts"
         div.col-sm-8
-          h3="Location"
-          div(style='display: flex')
-            div(style='flex: 1')
-              p!=user.address.street+"<br>"+user.address.apt+"<br>"+user.address.city+", "+user.address.state+" "+user.address.zip
-            div(style='flex: 1')
-              div#map
-          h3="Instruments"
-          div.instruments
-            each instrument in user.instruments
-              div.instrument
-                p=ucfirst(instrument.name)
-                p="Skill: "+ucfirst(instrument.skill)
-                p="Years: "+instrument.years
-          h3="Genres"
-          div.genres
-            each genre in user.genres
-              div.genre
-                p=ucfirst(genre)
-          h3="Influences"
-          div.Influences
-            each influence in user.influences
-              div.influence
-                p=influence
+          section.editable
+            header
+              h3="Location"
+              - if (edit)
+                svg.pencil(width='20' height='20' viewBox='0 0 24 24')
+                  path(d='M19.769 9.923l-12.642 12.639-7.127 1.438 1.438-7.128 12.641-12.64 5.69 5.691zm1.414-1.414l2.817-2.82-5.691-5.689-2.816 2.817 5.69 5.692z')
+            div(style='display: flex')
+              div(style='flex: 1')
+                p!=user.address.street+"<br>"+user.address.apt+"<br>"+user.address.city+", "+user.address.state+" "+user.address.zip
+              div(style='flex: 1')
+                div#map
+          section.editable
+            header
+              h3="Instruments"
+              - if (edit)
+                svg.pencil(width='20' height='20' viewBox='0 0 24 24')
+                  path(d='M19.769 9.923l-12.642 12.639-7.127 1.438 1.438-7.128 12.641-12.64 5.69 5.691zm1.414-1.414l2.817-2.82-5.691-5.689-2.816 2.817 5.69 5.692z')
+            div.instruments
+              each instrument in user.instruments
+                div.instrument
+                  p!="<b>"+ucfirst(instrument.name)+"</b>"
+                  p=ucfirst(instrument.skill)
+                  p=instrument.years+(instrument.years==1 ? " year" : " years")
+          section.editable
+            header
+              h3="Genres"
+              - if (edit)
+                svg.pencil(width='20' height='20' viewBox='0 0 24 24')
+                  path(d='M19.769 9.923l-12.642 12.639-7.127 1.438 1.438-7.128 12.641-12.64 5.69 5.691zm1.414-1.414l2.817-2.82-5.691-5.689-2.816 2.817 5.69 5.692z')
+            div.genres
+              each genre in user.genres
+                div.genre
+                  p=ucfirst(genre)
+          section.editable
+            header
+              h3="Influences"
+              - if (edit)
+                svg.pencil(width='20' height='20' viewBox='0 0 24 24')
+                  path(d='M19.769 9.923l-12.642 12.639-7.127 1.438 1.438-7.128 12.641-12.64 5.69 5.691zm1.414-1.414l2.817-2.82-5.691-5.689-2.816 2.817 5.69 5.692z')
+            div.influences
+              each influence in user.influences
+                div.influence
+                  p=influence
     include includes/footer.jade

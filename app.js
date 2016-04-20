@@ -95,17 +95,21 @@ MongoClient.connect(dbUrl, function(err, db) {
       if (err2) {
         assert.equal(null, err2);
       }
-      res.render('profile', {"user": doc2});
+      if (req.session.userID==doc2._id) {
+        res.render('profile', {"user": doc2, "edit": true});
+      } else {
+        res.render('profile', {"user": doc2, "edit": false});
+      }
     });
   });
 
   app.get('/profile', function(req, res) {
     if (req.session.userID) {
       am.getUser(db, req.session.userID, function(err2, doc2) {
-        res.render('profile', {"user": doc2});
+        res.render('profile', {"user": doc2, "edit": true});
       });
     } else {
-      res.redirect("/");
+      res.redirect("/?err=login");
     }
   });
 
