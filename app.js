@@ -41,7 +41,7 @@ MongoClient.connect(dbUrl, function(err, db) {
   });
 
   app.get('/', function(req, res) {
-    var errMsg = "";
+    var errMsg;
     switch(req.query.err) {
       case 'login':
         errMsg = "You need to log in first"; break;
@@ -115,10 +115,6 @@ MongoClient.connect(dbUrl, function(err, db) {
     }
   });
 
-  app.get('/signup', function(req, res) {
-    res.render('signup');
-  });
-
   app.post('/signup', function(req, res) {
     var newInfo = {
       'firstName': req.body.firstName,
@@ -131,9 +127,26 @@ MongoClient.connect(dbUrl, function(err, db) {
       if (res2) {
         res.redirect("/?err=created");
       } else {
-        res.redirect("/signup/?err=fail");
+        res.redirect("/signup/?err=fail&firstName="+req.body.firstName+"&lastName="+req.body.lastName+"&email="+req.body.email);
       }
     });
+  });
+
+  app.get('/signup', function(req, res) {
+    var errMsg;
+    var prevInfo;
+    switch (req.query.err) {
+      case 'fail':
+        errMsg = "Failed to create user"
+      default:
+        break;
+    }
+    prevInfo = {
+      'firstName': req.query.firstName,
+      'lastName': req.query.lastName,
+      'email': req.query.email
+    }
+    res.render('signup', {"prevInfo": prevInfo, "errMsg": errMsg});
   });
 
   // Public urls go before here

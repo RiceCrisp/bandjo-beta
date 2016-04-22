@@ -52,6 +52,8 @@ module.exports.getUser = function(db, u_id, cb) {
 
 module.exports.createUser = function(db, newInfo, cb) {
   db.collection('users').insertOne(newInfo, function(err, res) {
+    res = null;
+    err = 'yo';
     cb(err, res);
   });
 };

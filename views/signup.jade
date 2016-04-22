@@ -5,22 +5,24 @@ html(lang='en')
     include includes/header.jade
     main.container
       div.row
+        if errMsg
+          p.bg-info=errMsg
         form#signup-form.white(action='/signup', method='post')
           table
             tr
               td
                 label(for='first-name')="First Name"
                 br
-                input#first-name(name='firstName', type='text')
+                input#first-name(name='firstName', type='text', value=prevInfo.firstName)
               td
                 label(for='last-name')="Last Name"
                 br
-                input#last-name(name='lastName', type='text')
+                input#last-name(name='lastName', type='text', value=prevInfo.lastName)
             tr
               td
                 label(for='email')="Email"
                 br
-                input#email(name='email', type='email')
+                input#email(name='email', type='email', value=prevInfo.email)
               td
                 label(for='email2')="Re-enter Email"
                 br
