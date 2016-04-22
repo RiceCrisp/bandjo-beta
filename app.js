@@ -51,6 +51,8 @@ MongoClient.connect(dbUrl, function(err, db) {
         errMsg = "Incorrect password"; break;
       case 'multi':
         errMsg = "Multiple accounts associated with that email"; break;
+      case 'created':
+        errMsg = "Account created"
       default:
         break;
     }
@@ -71,7 +73,7 @@ MongoClient.connect(dbUrl, function(err, db) {
 
   app.post('/login', function(req, res) {
     var password = req.body.password;
-    //var password = crypto.createHash("sha1").update(req.body.password).digest('hex');
+    var password = crypto.createHash("sha1").update(req.body.password).digest('hex');
     am.manualLogin(db, req.body.email, password, function(res2, u_id) {
       switch(res2) {
         case 'success':
@@ -113,17 +115,6 @@ MongoClient.connect(dbUrl, function(err, db) {
     }
   });
 
-  // Public urls go before here
-  app.use(function(req, res, next) {
-    if (req.session.userID==null) {
-      console.log('Not logged in.');
-      res.redirect("/?err=login");
-      return;
-    }
-    console.log("UserID: "+req.session.userID);
-    next();
-  });
-
   app.get('/signup', function(req, res) {
     res.render('signup');
   });
@@ -136,14 +127,24 @@ MongoClient.connect(dbUrl, function(err, db) {
       'joinDate': new Date(),
       'password': crypto.createHash("sha1").update(req.body.password).digest('hex')
     }
-    am.createUser(db, newInfo, function(res2) {
-      switch(res2) {
-      case 1:
-        res.redirect("/?err=created"); break;
-      default:
-        res.redirect("/signup/?err=fail"); break;
+    am.createUser(db, newInfo, function(err2, res2) {
+      if (res2) {
+        res.redirect("/?err=created");
+      } else {
+        res.redirect("/signup/?err=fail");
       }
     });
+  });
+
+  // Public urls go before here
+  app.use(function(req, res, next) {
+    if (req.session.userID==null) {
+      console.log('Not logged in.');
+      res.redirect("/?err=login");
+      return;
+    }
+    console.log("UserID: "+req.session.userID);
+    next();
   });
 
   app.get('/logout', function(req, res) {

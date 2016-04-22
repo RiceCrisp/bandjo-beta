@@ -1,9 +1,9 @@
 {
   "email": "blakeboucher@gmail.com",
-  "password": "0ok9ij8uh",
+  "password": "077f4ee18a22bf7f3847f0cfa5e9e8cd615f7544",
   "firstName": "Blake",
   "lastName": "Boucher",
-  "joinDate": "4/9/16",
+  "joinDate": ISODate("2016-04-09T15:43:53.991Z"),
   "address": {
     "street": "2928 N Elston Ave",
     "apt": "Unit 2",
@@ -15,10 +15,33 @@
   "photo": "http://blakeboucher.com/wordpress/wp-content/uploads/2015/08/blake.png",
   "soundcloud": "https://soundcloud.com/blakeboucher",
   "instruments": [
-    {"name": "piano", "skill": "Expert", "years": 15},
-    {"name": "vocals", "skill": "Intermediate", "years": 6},
-    {"name": "drums", "skill": "Novice", "years": 4}
+    {"name": "piano", "skill": "expert", "years": 15},
+    {"name": "vocals", "skill": "intermediate", "years": 6},
+    {"name": "drums", "skill": "novice", "years": 4}
   ],
   "genres": ["pop", "easy listening"],
   "influences": ["Ben Folds", "John Mayer", "Sufjan Stevens", "MuteMath", "Father John Misty"]
+}
+{
+  "email": "heiderman.william@gmail.com",
+  "password": "b1b5c1b1a73edf66625ca7a359a2e8d2807cbc11",
+  "firstName": "William",
+  "lastName": "Heiderman",
+  "joinDate": ISODate("2016-04-21T15:43:53.991Z"),
+  "address": {
+    "street": "2643 N Fairfiled Ave",
+    "apt": "Unit 1",
+    "city": "Chicago",
+    "state": "IL",
+    "zip": "60618"
+  },
+  "link": "williamheiderman",
+  "photo": "http://images.esellerpro.com/2152/I/659/17/EB-4059_1600.jpg",
+  "soundcloud": "https://soundcloud.com/user-581768319",
+  "instruments": [
+    {"name": "harmonica", "skill": "novice", "years": 5},
+    {"name": "vocals", "skill": "novice", "years": 26}
+  ],
+  "genres": ["dubstep", "rock", "indie rock"],
+  "influences": ["Courtney Barnett", "Justice", "Beck", "Interpol", "Father John Misty"]
 }
