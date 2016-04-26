@@ -1,6 +1,7 @@
 doctype html
 html(lang='en')
   include includes/head.jade
+  script(src='../js/validation.js')
   body
     include includes/header.jade
     main.container
@@ -22,20 +23,20 @@ html(lang='en')
               td
                 label(for='email')="Email"
                 br
-                input#email(name='email', type='email', value=prevInfo.email)
+                input#email(name='email', type='email', verify-target='email2', value=prevInfo.email)
               td
                 label(for='email2')="Re-enter Email"
                 br
-                input#email2(name='email2', type='email')
+                input#email2(name='email2', type='email', verify-target='email')
             tr
               td
                 label(for='password')="Password"
                 br
-                input#password(name='password', type='password')
+                input#password(name='password', type='password', verify-target='password2')
               td
                 label(for='password2')="Re-enter Password"
                 br
-                input#password2(name='password2', type='password')
+                input#password2(name='password2', type='password', verify-target='password')
             tr
               td
                 input.blue-btn(type='submit', value='Sign Up')
