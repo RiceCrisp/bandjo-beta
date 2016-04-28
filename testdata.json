@@ -11,6 +11,10 @@
     "state": "IL",
     "zip": "60618"
   },
+  "location": {
+    "lat": 41.9344717,
+    "long": -87.693691
+  },
   "link": "blakeboucher",
   "photo": "http://blakeboucher.com/wordpress/wp-content/uploads/2015/08/blake.png",
   "soundcloud": "https://soundcloud.com/blakeboucher",
@@ -29,11 +33,15 @@
   "lastName": "Heiderman",
   "joinDate": ISODate("2016-04-21T15:43:53.991Z"),
   "address": {
-    "street": "2643 N Fairfiled Ave",
+    "street": "2643 N Fairfield Ave",
     "apt": "Unit 1",
     "city": "Chicago",
     "state": "IL",
     "zip": "60618"
+  },
+  "location": {
+    "lat": 41.930018,
+    "long": -87.696212
   },
   "link": "williamheiderman",
   "photo": "http://images.esellerpro.com/2152/I/659/17/EB-4059_1600.jpg",
