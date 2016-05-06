@@ -1,0 +1,19 @@
+form#login-form.white(action='/login', method='post')
+  if errMsg
+    p.bg-info=errMsg
+  label(for='email')="Email"
+  br
+  input#email(name='email', type='email', value=email)
+  br
+  label(for='password')="Password"
+  br
+  input#password(name='password', type='password')
+  br
+  input#remember(name='remember', type='checkbox')
+  label(for='remember')="Remember me"
+  br
+  input#forgot(name='forgot', type='checkbox')
+  label(for='forgot', style='margin-bottom: 12px')="Forgot password"
+  br
+  input.blue-btn(type='submit', value='Log In')
+  a.blue-btn(href='/signup')="Sign Up"
