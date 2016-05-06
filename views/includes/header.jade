@@ -1,0 +1,11 @@
+header
+  nav.navbar.navbar-default
+    div.container
+      div.navbar-header
+        a.navbar-brand(href='/')="Bandjo"
+      div.navbar-right
+        - if (loggedIn) {
+          a.btn.btn-default.navbar-btn(href='/logout')="Log Off"
+        - } else {
+          a.btn.btn-default.navbar-btn(href='/')="Log In"
+        - }
