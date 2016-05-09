@@ -10,6 +10,7 @@ var crypto = require('crypto');
 var helmet = require('helmet');
 var am = require('./assets/js/account_manager');
 
+var database;
 var dbUrl = 'mongodb://localhost:27017/bandjo';
 
 app.set('view engine', 'jade');
@@ -19,7 +20,8 @@ app.use(helmet());
 app.use(cookieParser());
 app.use(cookieSession({secret: 'thisismysecret'}));
 app.use('/assets', express.static(__dirname + '/assets'));
-app.use('/angular', express.static(__dirname + '/node_modules/angular'))
+app.use('/modules', express.static(__dirname + '/node_modules'));
+app.use('/views', express.static(__dirname + '/views'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -28,49 +30,79 @@ app.locals.ucfirst = function(value){
 };
 
 MongoClient.connect(dbUrl, function(err, db) {
-
   "use strict";
   assert.equal(null, err);
-
-  app.use('*', function(req, res, next) {
-    if (req.session.userID) {
-      res.locals.loggedIn = true;
-    } else {
-      res.locals.loggedIn = false;
-    }
-    next();
+  database = db;
+  var server = app.listen(3000, function() {
+    var port = server.address().port;
+    console.log('Express server listening on port %s', port);
   });
+});
 
-  app.get('/', function(req, res) {
-    var errMsg;
-    switch(req.query.err) {
-      case 'login':
-        errMsg = "You need to log in first"; break;
-      case 'email':
-        errMsg = "Incorrect email"; break;
-      case 'password':
-        errMsg = "Incorrect password"; break;
-      case 'multi':
-        errMsg = "Multiple accounts associated with that email"; break;
-      case 'created':
-        errMsg = "Account created"
-      default:
-        break;
+app.use('*', function(req, res, next) {
+  var results;
+  var query = {};
+  var projection = {"_id": 0, "firstName": 1, "lastName": 1, "instruments": 1, "photo": 1};
+  var cursor = database.collection('users').find(query, projection);
+  cursor.limit(1);
+  cursor.forEach(
+    function(doc) {
+      results = doc;
+    }, function(err) {
+        assert.equal(err, null);
+        res.render('index', {'results': results, 'errMsg': 'test', 'email': req.query.email});
     }
-    var results;
-    var query = {};
-    var projection = {"_id": 0, "firstName": 1, "lastName": 1, "instruments": 1, "photo": 1};
-    var cursor = db.collection('users').find(query, projection);
-    cursor.limit(1);
-    cursor.forEach(
-      function(doc) {
-        results = doc;
-      }, function(err) {
-          assert.equal(err, null);
-          res.render('home', {'results': results, 'errMsg': errMsg, 'email': req.query.email});
-      }
-    );
-  });
+  );
+});
+
+app.get('/partials/:name', function(req, res, next) {
+  res.render('partials/' + req.params.name);
+});
+
+/*
+app.use('*', function(req, res, next) {
+  if (req.session.userID) {
+    res.locals.loggedIn = true;
+  } else {
+    res.locals.loggedIn = false;
+  }
+  next();
+});
+
+app.get('/', function(req, res) {
+  var errMsg;
+  switch(req.query.err) {
+    case 'login':
+      errMsg = "You need to log in first"; break;
+    case 'email':
+      errMsg = "Incorrect email"; break;
+    case 'password':
+      errMsg = "Incorrect password"; break;
+    case 'multi':
+      errMsg = "Multiple accounts associated with that email"; break;
+    case 'created':
+      errMsg = "Account created"
+    default:
+      break;
+  }
+  var results;
+  var query = {};
+  var projection = {"_id": 0, "firstName": 1, "lastName": 1, "instruments": 1, "photo": 1};
+  var cursor = database.collection('users').find(query, projection);
+  cursor.limit(1);
+  cursor.forEach(
+    function(doc) {
+      results = doc;
+    }, function(err) {
+        assert.equal(err, null);
+        res.render('home', {'results': results, 'errMsg': errMsg, 'email': req.query.email});
+    }
+  );
+});
+
+app.use(function(req, res) {
+  res.sendStatus(404);
+});
 
   app.post('/login', function(req, res) {
     var password = req.body.password;
@@ -165,14 +197,4 @@ MongoClient.connect(dbUrl, function(err, db) {
     req.session.reset();
     res.redirect('/');
   });
-
-  app.use(function(req, res) {
-    res.sendStatus(404);
-  });
-
-  var server = app.listen(3000, function() {
-    var port = server.address().port;
-    console.log('Express server listening on port %s', port);
-  });
-
-});
+*/

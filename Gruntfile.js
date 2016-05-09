@@ -54,11 +54,11 @@ module.exports = function(grunt) {
       css: {
         files: ["assets/css/*.less"],
         tasks: ["less:target"]
-      },
+      },/*
       js: {
         files: ["Gruntfile.js", "assets/js/*.js"],
         tasks: ["uglify:target", "jshint:target"]
-      },
+      },*/
       server: {
         files: ["app.js"],
         tasks: ["express:target"],
