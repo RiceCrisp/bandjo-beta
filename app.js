@@ -18,7 +18,8 @@ app.set('views', __dirname + '/views');
 app.use(helmet());
 app.use(cookieParser());
 app.use(cookieSession({secret: 'thisismysecret'}));
-app.use(express.static('assets'));
+app.use('/assets', express.static(__dirname + '/assets'));
+app.use('/angular', express.static(__dirname + '/node_modules/angular'))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
