@@ -1,5 +1,5 @@
 var express = require('express');
-var app = express();
+var app = module.exports = express();
 var cookieParser = require('cookie-parser');
 var cookieSession = require('cookie-session');
 var bodyParser = require('body-parser');
@@ -8,7 +8,7 @@ var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var crypto = require('crypto');
 var helmet = require('helmet');
-var am = require('./assets/js/account_manager');
+var api = require('./routes/api.js');
 
 var database;
 var dbUrl = 'mongodb://localhost:27017/bandjo';
@@ -43,40 +43,10 @@ app.get('/partials/:name', function (req, res) {
   res.render('partials/' + name);
 });
 
-app.get('/api/user/:id', function(req, res) {
-  var id = req.params.id;
-});
-
-app.use('/', function(req, res) {
-  var results;
-  var query = {};
-  var projection = {"_id": 0, "firstName": 1, "lastName": 1, "instruments": 1, "photo": 1};
-  var cursor = database.collection('users').find(query, projection);
-  cursor.limit(1);
-  cursor.forEach(
-    function(doc) {
-      results = doc;
-    }, function(err) {
-        assert.equal(err, null);
-        res.render('index', {'results': results, 'errMsg': 'test', 'email': req.query.email});
-    }
-  );
-});
+app.get('/api/user/:id', api.getUser);
 
 app.use('*', function(req, res) {
-  var results;
-  var query = {};
-  var projection = {"_id": 0, "firstName": 1, "lastName": 1, "instruments": 1, "photo": 1};
-  var cursor = database.collection('users').find(query, projection);
-  cursor.limit(1);
-  cursor.forEach(
-    function(doc) {
-      results = doc;
-    }, function(err) {
-        assert.equal(err, null);
-        res.render('index', {'results': results, 'errMsg': 'test', 'email': req.query.email});
-    }
-  );
+  res.render('index');
 });
 
 /*

@@ -6,6 +6,9 @@ app.config(function($routeProvider, $locationProvider) {
     when('/', {
       templateUrl: 'partials/home'
     }).
+    when('/profile', {
+      templateUrl: 'partials/profile'
+    }).
     when('/test', {
       templateUrl: 'partials/login'
     }).

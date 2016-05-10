@@ -1,11 +1,10 @@
-var ObjectId = require('mongodb').ObjectId;
-
-module.exports.user = function (req, res) {
-  var id = req.params.id;
-  if ()
-}
-
-module.exports.getUser = function(db, u_id, cb) {
+exports.getUser = function(req, res) {
+  var u_id = req.params.id;
+  console.log('did it with ' + u_id);
+  res.json({
+    'id': u_id
+  });
+  /*
   db.collection('users').findOne( { "_id": new ObjectId(u_id) }, function(err, doc) {
     if (err) {
       db.collection('users').findOne( { "email": u_id }, function(err, doc) {
@@ -15,6 +14,7 @@ module.exports.getUser = function(db, u_id, cb) {
       cb(err, doc);
     }
   });
+  */
 };
 
 module.exports.createUser = function(db, newInfo, cb) {
