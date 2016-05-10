@@ -21,7 +21,6 @@ app.use(cookieParser());
 app.use(cookieSession({secret: 'thisismysecret'}));
 app.use('/assets', express.static(__dirname + '/assets'));
 app.use('/modules', express.static(__dirname + '/node_modules'));
-app.use('/views', express.static(__dirname + '/views'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -39,7 +38,16 @@ MongoClient.connect(dbUrl, function(err, db) {
   });
 });
 
-app.use('*', function(req, res, next) {
+app.get('/partials/:name', function (req, res) {
+  var name = req.params.name;
+  res.render('partials/' + name);
+});
+
+app.get('/api/user/:id', function(req, res) {
+  var id = req.params.id;
+});
+
+app.use('/', function(req, res) {
   var results;
   var query = {};
   var projection = {"_id": 0, "firstName": 1, "lastName": 1, "instruments": 1, "photo": 1};
@@ -55,11 +63,28 @@ app.use('*', function(req, res, next) {
   );
 });
 
+app.use('*', function(req, res) {
+  var results;
+  var query = {};
+  var projection = {"_id": 0, "firstName": 1, "lastName": 1, "instruments": 1, "photo": 1};
+  var cursor = database.collection('users').find(query, projection);
+  cursor.limit(1);
+  cursor.forEach(
+    function(doc) {
+      results = doc;
+    }, function(err) {
+        assert.equal(err, null);
+        res.render('index', {'results': results, 'errMsg': 'test', 'email': req.query.email});
+    }
+  );
+});
+
+/*
 app.get('/partials/:name', function(req, res, next) {
   res.render('partials/' + req.params.name);
 });
 
-/*
+
 app.use('*', function(req, res, next) {
   if (req.session.userID) {
     res.locals.loggedIn = true;

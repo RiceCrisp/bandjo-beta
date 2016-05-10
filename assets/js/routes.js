@@ -1,17 +1,16 @@
 'use strict';
+var app = angular.module('myApp', ['ngRoute']);
 
-angular.module('myApp', ['ngRoute']).
-  config(['$routeProvider', function($routeProvider, $locationProvider) {
-    $routeProvider.
-      when('/', {
-        templateUrl: 'views/partials/home',
-        controller: IndexCtrl
-      }).
-      when('/test', {
-        templateUrl: 'views/partials/home',
-        controller: IndexCtrl
-      }).
-      otherwise({
-        redirectTo: '/dumb'
-      });
-  }]);
+app.config(function($routeProvider, $locationProvider) {
+  $routeProvider.
+    when('/', {
+      templateUrl: 'partials/home'
+    }).
+    when('/test', {
+      templateUrl: 'partials/login'
+    }).
+    otherwise({
+      redirectTo: '/'
+    });
+    $locationProvider.html5Mode(true);
+});
