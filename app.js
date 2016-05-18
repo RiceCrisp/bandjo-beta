@@ -8,18 +8,22 @@ var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var crypto = require('crypto');
 var helmet = require('helmet');
-var api = require('./routes/api.js');
+var api = require('./assets/js/api.js');
 
 var database;
 var dbUrl = 'mongodb://localhost:27017/bandjo';
 
 app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
+app.set('view options', {
+  layout: false
+});
 
 app.use(helmet());
 app.use(cookieParser());
 app.use(cookieSession({secret: 'thisismysecret'}));
 app.use('/assets', express.static(__dirname + '/assets'));
+app.use('/routes', express.static(__dirname + '/routes'));
 app.use('/modules', express.static(__dirname + '/node_modules'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -38,23 +42,12 @@ MongoClient.connect(dbUrl, function(err, db) {
   });
 });
 
-app.get('/partials/:name', function (req, res) {
-  var name = req.params.name;
-  res.render('partials/' + name);
+app.use('*', function(req, res, next) {
+  req.db = database;
+  next();
 });
 
-app.get('/api/user/:id', api.getUser);
-
-app.use('*', function(req, res) {
-  res.render('index');
-});
-
-/*
-app.get('/partials/:name', function(req, res, next) {
-  res.render('partials/' + req.params.name);
-});
-
-
+// Public urls go before this
 app.use('*', function(req, res, next) {
   if (req.session.userID) {
     res.locals.loggedIn = true;
@@ -64,6 +57,19 @@ app.use('*', function(req, res, next) {
   next();
 });
 
+app.get('/partials/:name', function (req, res) {
+  var name = req.params.name;
+  res.render('partials/' + name);
+});
+
+//app.get('/api/user/:id', api.getUserByID);
+app.get('/api/user', api.getUser);
+
+app.use('*', function(req, res) {
+  res.render('index');
+});
+
+/*
 app.get('/', function(req, res) {
   var errMsg;
   switch(req.query.err) {

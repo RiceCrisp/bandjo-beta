@@ -1,7 +1,25 @@
 'use strict';
 
-function IndexCtrl($scope, $http) {
-  $scope.results = "test";
+function GetUserCtrl($scope, $http, $routeParams) {
+  $scope.firstName = 'test';
+  if ($routeParams.id) {
+    $http.get('/api/user?id=' + $routeParams.id).
+      success(function(data) {
+        $scope.results = data;
+      });
+  } else {
+    $http.get('/api/user?url=' + $routeParams.link).
+      success(function(data) {
+        $scope.results = data;
+      });
+  }
+}
+
+function LoginCtrl($scope, $http, $routeParams) {
+  $http.get('/api/login/' + $routeParams).
+    success(function(data) {
+      $scope.results = data;
+    });
 }
 /*
 function AddPostCtrl($scope, $http, $location) {

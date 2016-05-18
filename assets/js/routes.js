@@ -1,4 +1,5 @@
 'use strict';
+
 var app = angular.module('myApp', ['ngRoute']);
 
 app.config(function($routeProvider, $locationProvider) {
@@ -6,8 +7,13 @@ app.config(function($routeProvider, $locationProvider) {
     when('/', {
       templateUrl: 'partials/home'
     }).
-    when('/profile', {
-      templateUrl: 'partials/profile'
+    when('/:link', {
+      templateUrl: 'partials/profile',
+      controller: GetUserCtrl
+    }).
+    when('/profile/:id', {
+      templateUrl: 'partials/profile',
+      controller: GetUserCtrl
     }).
     when('/test', {
       templateUrl: 'partials/login'

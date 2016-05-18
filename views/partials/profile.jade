@@ -1,11 +1,11 @@
 block content
   div.row
     div.col-sm-12
-      h2=user.firstName+" "+user.lastName
+      h2!='{{results.firstName}}' + ' ' + '{{results.lastName}}'
   div.row
     div.col-sm-4
       section
-        img.img-responsive.profile-pic(src=user.photo, alt=user.firstName, style='background: black')
+        img.img-responsive.profile-pic(src='{{results.photo}}', alt='{{results.firstName}}', style='background: black')
         - if (edit)
           svg.pencil(width='26' height='26' viewBox='0 0 24 24' style='position: absolute; top: 1; right: 16px; padding: 3px;')
             path(d='M19.769 9.923l-12.642 12.639-7.127 1.438 1.438-7.128 12.641-12.64 5.69 5.691zm1.414-1.414l2.817-2.82-5.691-5.689-2.816 2.817 5.69 5.692z')
@@ -21,7 +21,7 @@ block content
               path(d='M19.769 9.923l-12.642 12.639-7.127 1.438 1.438-7.128 12.641-12.64 5.69 5.691zm1.414-1.414l2.817-2.82-5.691-5.689-2.816 2.817 5.69 5.692z')
         div(style='display: flex')
           div(style='flex: 1')
-            p!=user.address.street+"<br>"+user.address.apt+"<br>"+user.address.city+", "+user.address.state+" "+user.address.zip
+            p!='{{results.address.street}}'+'<br>'+'{{results.address.apt}}'+'<br>'+'{{results.address.city}}'+', '+'{{results.address.state}}'+' '+'{{results.address.zip}}'
           div(style='flex: 1')
             div#map
       section.editable
@@ -31,12 +31,11 @@ block content
             svg.pencil(width='20' height='20' viewBox='0 0 24 24')
               path(d='M19.769 9.923l-12.642 12.639-7.127 1.438 1.438-7.128 12.641-12.64 5.69 5.691zm1.414-1.414l2.817-2.82-5.691-5.689-2.816 2.817 5.69 5.692z')
         div.instruments
-          ul.boxes
-            each instrument in user.instruments
-              li.instrument
-                p!="<b>"+ucfirst(instrument.name)+"</b>"
-                p=ucfirst(instrument.skill)
-                p=instrument.years+(instrument.years==1 ? " year" : " years")
+          ul.boxes(ng-repeat='instrument in results.instruments')
+            li.instrument
+              p.cap!='<b>'+'{{instrument.name}}'+'</b>'
+              p.cap='{{instrument.skill}}'
+              p!='{{instrument.years}}'+('{{instrument.years}}'==1 ? " year" : " years")
       section.editable
         header
           h3="Genres"
@@ -44,9 +43,8 @@ block content
             svg.pencil(width='20' height='20' viewBox='0 0 24 24')
               path(d='M19.769 9.923l-12.642 12.639-7.127 1.438 1.438-7.128 12.641-12.64 5.69 5.691zm1.414-1.414l2.817-2.82-5.691-5.689-2.816 2.817 5.69 5.692z')
         div.genres
-          ul.boxes
-            each genre in user.genres
-              li.genre=ucfirst(genre)
+          ul.boxes(ng-repeat='genre in results.genres')
+            li.genre.cap='{{genre}}'
       section.editable
         header
           h3="Influences"
@@ -54,6 +52,5 @@ block content
             svg.pencil(width='20' height='20' viewBox='0 0 24 24')
               path(d='M19.769 9.923l-12.642 12.639-7.127 1.438 1.438-7.128 12.641-12.64 5.69 5.691zm1.414-1.414l2.817-2.82-5.691-5.689-2.816 2.817 5.69 5.692z')
         div.influences
-          ul.boxes
-            each influence in user.influences
-              li.influence=influence
+          ul.boxes(ng-repeat='influence in results.influences')
+            li.influence.cap='{{influence}}'
