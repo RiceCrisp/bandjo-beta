@@ -3,10 +3,10 @@ var app = module.exports = express();
 var cookieParser = require('cookie-parser');
 var cookieSession = require('cookie-session');
 var bodyParser = require('body-parser');
+var crypto = require('crypto');
 var engines = require('consolidate');
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
-var crypto = require('crypto');
 var helmet = require('helmet');
 var api = require('./assets/js/api.js');
 
@@ -57,16 +57,40 @@ app.use('*', function(req, res, next) {
   next();
 });
 
+app.post('/login', function(req, res) {
+  var email = req.body.email;
+  var password = req.body.password;
+  var hashedPassword = crypto.createHash("sha1").update(password).digest('hex');
+  var query = { "email": email, "password": hashedPassword };
+  var projection = {};
+  req.db.collection('users').findOne(query, projection, function(err, doc) {
+    if (err) {
+      res.redirect('/');
+    } else {
+      req.session.userID = doc._id;
+      res.redirect('/profile');
+    }
+  });
+});
+
+app.use('/logout', api.logoutUser, function(req, res) {
+  res.redirect('/');
+});
+
 app.get('/partials/:name', function (req, res) {
   var name = req.params.name;
   res.render('partials/' + name);
 });
 
-//app.get('/api/user/:id', api.getUserByID);
 app.get('/api/user', api.getUser);
+app.get('/api/login', api.loginUser);
 
 app.use('*', function(req, res) {
-  res.render('index');
+  res.render('index', {'loggedInID': req.session.userID});
+});
+
+app.use(function(req, res) {
+  res.sendStatus(404);
 });
 
 /*
@@ -99,10 +123,6 @@ app.get('/', function(req, res) {
         res.render('home', {'results': results, 'errMsg': errMsg, 'email': req.query.email});
     }
   );
-});
-
-app.use(function(req, res) {
-  res.sendStatus(404);
 });
 
   app.post('/login', function(req, res) {

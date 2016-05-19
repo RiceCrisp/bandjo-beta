@@ -9,6 +9,11 @@ html(lang='en')
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css', integrity='sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7', crossorigin='anonymous')
     script(src='https://code.jquery.com/jquery-2.2.3.min.js', integrity='sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=', crossorigin='anonymous')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js', integrity='sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS', crossorigin='anonymous')
+    script(src='modules/angular/angular.js')
+    script(src='modules/angular-route/angular-route.js')
+    //script(src='modules/angular-cookies/angular-cookies.js')
+    script(src='assets/js/controllers.js')
+    script(src='assets/js/routes.js')
     //script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBkKaE--mik3N8qLk0D2494Eq-tQgMntds&callback=initMap', async, defer)
     link(rel='stylesheet', href='assets/css/style.min.css')
     //script(src='../js/maps.min.js')
@@ -20,8 +25,9 @@ html(lang='en')
             div.navbar-header
               a.navbar-brand(href='/')="Bandjo"
             div.navbar-right
-              - if (loggedIn) {
-                a.btn.btn-default.navbar-btn(href='/logout')="Log Off"
+              - if (loggedInID) {
+                img(src='{{results.photo}}', style='width:40px; height:40px; border-radius:50%;')
+                a.btn.btn-default.navbar-btn(href='/logout')="Log Out"
               - } else {
                 a.btn.btn-default.navbar-btn(href='/')="Log In"
               - }
@@ -61,7 +67,3 @@ html(lang='en')
       footer
         div.container
           small="Bandjo is maintained by Blake Boucher. Go tell 'em."
-          script(src='modules/angular/angular.js')
-          script(src='modules/angular-route/angular-route.js')
-          script(src='assets/js/controllers.js')
-          script(src='assets/js/routes.js')

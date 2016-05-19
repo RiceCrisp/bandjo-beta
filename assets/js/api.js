@@ -1,15 +1,16 @@
 var ObjectId = require('mongodb').ObjectId;
 
 exports.loginUser = function(req, res) {
+  var email = req.body.email;
   var password = req.body.password;
-  var hashedPassword = crypto.createHash("sha1").update(req.body.password).digest('hex');
+  var hashedPassword = crypto.createHash("sha1").update(password).digest('hex');
   var query = { "email": email, "password": hashedPassword };
   var projection = {};
   req.db.collection('users').findOne(query, projection, function(err, doc) {
     if (err) {
-      console.log(err);
+      res.send(null);
     } else {
-      req.session.userID = doc._id;
+      res.json(doc);
     }
   });
 };

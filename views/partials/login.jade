@@ -1,13 +1,13 @@
-form#login-form.white(action='/login', method='post')
+form#login-form.white(ng-submit='submit()')
   if errMsg
     p.bg-info=errMsg
   label(for='email')="Email"
   br
-  input#email(name='email', type='email', value=email)
+  input#email(name='email', type='email', ng-model='email')
   br
   label(for='password')="Password"
   br
-  input#password(name='password', type='password')
+  input#password(name='password', type='password', ng-model='password')
   br
   input#remember(name='remember', type='checkbox')
   label(for='remember')="Remember me"

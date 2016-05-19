@@ -5,6 +5,7 @@
   "main": "app.js",
   "dependencies": {
     "angular": "^1.5.5",
+    "angular-cookies": "^1.5.5",
     "angular-route": "^1.5.5",
     "body-parser": "^1.15.0",
     "consolidate": "^0.14.0",

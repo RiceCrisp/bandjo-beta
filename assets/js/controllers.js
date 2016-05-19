@@ -1,7 +1,6 @@
 'use strict';
 
 function GetUserCtrl($scope, $http, $routeParams) {
-  $scope.firstName = 'test';
   if ($routeParams.id) {
     $http.get('/api/user?id=' + $routeParams.id).
       success(function(data) {
@@ -15,60 +14,22 @@ function GetUserCtrl($scope, $http, $routeParams) {
   }
 }
 
-function LoginCtrl($scope, $http, $routeParams) {
-  $http.get('/api/login/' + $routeParams).
+function EditUserCtrl($scope, $http) {
+  var test = $cookies.get('userID');
+  //alert(LoggedInID);
+  alert(test);
+  $http.get('/api/user?id=' + '5734a889181538fe31b86227').
     success(function(data) {
       $scope.results = data;
     });
 }
-/*
-function AddPostCtrl($scope, $http, $location) {
-  $scope.form = {};
-  $scope.submitPost = function () {
-    $http.post('/api/post', $scope.form).
+
+function LoginCtrl($scope, $http) {
+  $scope.submit = function() {
+    $http.post('/api/login', {email: $scope.email, password: $scope.password}).
       success(function(data) {
-        $location.path('/');
+        alert(data);
+        $scope.results = data;
       });
   };
 }
-
-function ReadPostCtrl($scope, $http, $routeParams) {
-  $http.get('/api/post/' + $routeParams.id).
-    success(function(data) {
-      $scope.post = data.post;
-    });
-}
-
-function EditPostCtrl($scope, $http, $location, $routeParams) {
-  $scope.form = {};
-  $http.get('/api/post/' + $routeParams.id).
-    success(function(data) {
-      $scope.form = data.post;
-    });
-
-  $scope.editPost = function () {
-    $http.put('/api/post/' + $routeParams.id, $scope.form).
-      success(function(data) {
-        $location.url('/readPost/' + $routeParams.id);
-      });
-  };
-}
-
-function DeletePostCtrl($scope, $http, $location, $routeParams) {
-  $http.get('/api/post/' + $routeParams.id).
-    success(function(data) {
-      $scope.post = data.post;
-    });
-
-  $scope.deletePost = function () {
-    $http.delete('/api/post/' + $routeParams.id).
-      success(function(data) {
-        $location.url('/');
-      });
-  };
-
-  $scope.home = function () {
-    $location.url('/');
-  };
-}
-*/
