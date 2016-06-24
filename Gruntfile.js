@@ -60,7 +60,7 @@ module.exports = function(grunt) {
         tasks: ["uglify:target", "jshint:target"]
       },*/
       server: {
-        files: ["app.js"],
+        files: ["app.js", "assets/js/api.js"],
         tasks: ["express:target"],
         options: {
           atBegin: true,

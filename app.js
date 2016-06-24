@@ -2,8 +2,8 @@ var express = require('express');
 var app = module.exports = express();
 var cookieParser = require('cookie-parser');
 var cookieSession = require('cookie-session');
+//var session = require('express-session');
 var bodyParser = require('body-parser');
-var crypto = require('crypto');
 var engines = require('consolidate');
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
@@ -43,38 +43,11 @@ MongoClient.connect(dbUrl, function(err, db) {
 });
 
 app.use('*', function(req, res, next) {
+  if (req.session.userID) {
+    api.autoLogin;
+  }
   req.db = database;
   next();
-});
-
-// Public urls go before this
-app.use('*', function(req, res, next) {
-  if (req.session.userID) {
-    res.locals.loggedIn = true;
-  } else {
-    res.locals.loggedIn = false;
-  }
-  next();
-});
-
-app.post('/login', function(req, res) {
-  var email = req.body.email;
-  var password = req.body.password;
-  var hashedPassword = crypto.createHash("sha1").update(password).digest('hex');
-  var query = { "email": email, "password": hashedPassword };
-  var projection = {};
-  req.db.collection('users').findOne(query, projection, function(err, doc) {
-    if (err) {
-      res.redirect('/');
-    } else {
-      req.session.userID = doc._id;
-      res.redirect('/profile');
-    }
-  });
-});
-
-app.use('/logout', api.logoutUser, function(req, res) {
-  res.redirect('/');
 });
 
 app.get('/partials/:name', function (req, res) {
@@ -83,139 +56,20 @@ app.get('/partials/:name', function (req, res) {
 });
 
 app.get('/api/user', api.getUser);
-app.get('/api/login', api.loginUser);
+app.get('/api/autologin', api.autoLogin);
+app.post('/api/login', api.loginUser);
+app.get('/api/logout', api.logoutUser);
+//app.get('/api/genre', api.getUsersByGenre);
 
 app.use('*', function(req, res) {
-  res.render('index', {'loggedInID': req.session.userID});
+  res.render('index');
+  /*if (req.session.userID) {
+    res.render('index', {'loggedInID': req.session.userID});
+  } else {
+    res.render('index', {'loggedInID': null});
+  }*/
 });
 
 app.use(function(req, res) {
   res.sendStatus(404);
 });
-
-/*
-app.get('/', function(req, res) {
-  var errMsg;
-  switch(req.query.err) {
-    case 'login':
-      errMsg = "You need to log in first"; break;
-    case 'email':
-      errMsg = "Incorrect email"; break;
-    case 'password':
-      errMsg = "Incorrect password"; break;
-    case 'multi':
-      errMsg = "Multiple accounts associated with that email"; break;
-    case 'created':
-      errMsg = "Account created"
-    default:
-      break;
-  }
-  var results;
-  var query = {};
-  var projection = {"_id": 0, "firstName": 1, "lastName": 1, "instruments": 1, "photo": 1};
-  var cursor = database.collection('users').find(query, projection);
-  cursor.limit(1);
-  cursor.forEach(
-    function(doc) {
-      results = doc;
-    }, function(err) {
-        assert.equal(err, null);
-        res.render('home', {'results': results, 'errMsg': errMsg, 'email': req.query.email});
-    }
-  );
-});
-
-  app.post('/login', function(req, res) {
-    var password = req.body.password;
-    var password = crypto.createHash("sha1").update(req.body.password).digest('hex');
-    am.manualLogin(db, req.body.email, password, function(res2, u_id) {
-      switch(res2) {
-        case 'success':
-          req.session.userID = u_id;
-          res.redirect("/profile");
-          break;
-        case "email":
-          res.redirect("/?err=email&email=" + req.body.email); break;
-        case 'password':
-          res.redirect("/?err=password&email=" + req.body.email); break;
-        case 'multi':
-          res.redirect("/?err=multi&email=" + req.body.email); break;
-        default:
-          res.redirect("/"); break;
-      }
-    });
-  });
-
-  app.get('/profile/:id', function(req, res) {
-    am.getUser(db, req.params.id, function(err2, doc2) {
-      if (err2) {
-        assert.equal(null, err2);
-      }
-      if (req.session.userID==doc2._id) {
-        res.render('profile', {"user": doc2, "edit": true});
-      } else {
-        res.render('profile', {"user": doc2, "edit": false});
-      }
-    });
-  });
-
-  app.get('/profile', function(req, res) {
-    if (req.session.userID) {
-      am.getUser(db, req.session.userID, function(err2, doc2) {
-        res.render('profile', {"user": doc2, "edit": true});
-      });
-    } else {
-      res.redirect("/?err=login");
-    }
-  });
-
-  app.post('/signup', function(req, res) {
-    var newInfo = {
-      'firstName': req.body.firstName,
-      'lastName': req.body.lastName,
-      'email': req.body.email,
-      'joinDate': new Date(),
-      'password': crypto.createHash("sha1").update(req.body.password).digest('hex')
-    }
-    am.createUser(db, newInfo, function(err2, res2) {
-      if (res2) {
-        res.redirect("/?err=created");
-      } else {
-        res.redirect("/signup/?err=fail&firstName="+req.body.firstName+"&lastName="+req.body.lastName+"&email="+req.body.email);
-      }
-    });
-  });
-
-  app.get('/signup', function(req, res) {
-    var errMsg;
-    var prevInfo;
-    switch (req.query.err) {
-      case 'fail':
-        errMsg = "Failed to create user"
-      default:
-        break;
-    }
-    prevInfo = {
-      'firstName': req.query.firstName,
-      'lastName': req.query.lastName,
-      'email': req.query.email
-    }
-    res.render('signup', {"prevInfo": prevInfo, "errMsg": errMsg});
-  });
-
-  // Public urls go before here
-  app.use(function(req, res, next) {
-    if (req.session.userID==null) {
-      console.log('Not logged in.');
-      res.redirect("/?err=login");
-      return;
-    }
-    console.log("UserID: "+req.session.userID);
-    next();
-  });
-
-  app.get('/logout', function(req, res) {
-    req.session.reset();
-    res.redirect('/');
-  });
-*/

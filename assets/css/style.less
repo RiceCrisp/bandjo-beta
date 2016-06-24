@@ -1,10 +1,9 @@
 @lightblue: #6cf;
-@lightgray: #ddd;
+@lightgray: #eee;
 @darkgray: #888;
 
 /* Globals */
 body {
-  background: #eee;
   font-size: 160%;
   color: @darkgray;
 }
@@ -13,6 +12,20 @@ a {
   color: @lightblue;
   &:hover {
     color: @lightblue;
+  }
+}
+
+label {
+  margin-bottom: 0;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+input[type='checkbox'] {
+  margin-right: 5px;
+  &:hover {
+    cursor: pointer;
   }
 }
 
@@ -47,11 +60,6 @@ input[type=email], input[type=password], input[type=text] {
   max-width: 250px;
 }
 
-.white {
-  background: #fff;
-  padding: 10px;
-}
-
 .bg-info {
   padding: 10px;
   background: @lightblue;
@@ -61,29 +69,74 @@ input[type=email], input[type=password], input[type=text] {
 /* Header */
 .navbar {
   border: 0;
+  border-bottom: 1px solid @lightgray;
+  background: #f8f8f8 !important;
 }
 
 .navbar-default {
   background: #fff;
 }
 
-form#login-form input[type=email], form#login-form input[type=password]{
-  max-width: 100%;
+nav div.navbar-right {
+  height: 50px;
+  div.dropdown > a {
+    display: inline-block;
+    height: 50px;
+    line-height: 50px;
+    color: @darkgray;
+    padding: 0 10px;
+    transition: background 0.2s;
+    &:hover {
+      text-decoration: none;
+      background: @lightgray;
+      transition: background 0.2s;
+    }
+    span.name {
+      margin-right: 10px;
+    }
+    img {
+      margin-right: 10px;
+    }
+  }
+  ul.dropdown-menu {
+    margin-top: 1px;
+    padding: 0;
+    border-radius: 0;
+    border: 0;
+    box-shadow: 0 1px 8px rgba(0,0,0,.175);
+    li.divider {
+      margin: 0;
+    }
+    a {
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+  }
 }
 
-form#signup-form table tr td:first-child {
-  padding-right: 10px;
-}
-
-form#signup-form, form#login-form {
-  label {
-    margin-bottom: 0;
+form#login-form {
+  input[type=email], input[type=password] {
+    max-width: 100%;
+  }
+  table tr td:first-child {
+    padding-right: 10px;
+  }
+  a.forgot-password {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 90%;
   }
 }
 
 /* Profile */
 img.profile-pic {
   border: 1px solid @lightgray;
+}
+
+img.profile-pic-small {
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
 }
 
 section {
@@ -155,8 +208,8 @@ ul.boxes {
 }
 
 footer {
-  background: #fff;
+  background: #f8f8f8;
   margin-top: 20px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding: 10px 0;
+  border-top: 1px solid @lightgray;
 }

@@ -1,19 +1,17 @@
-form#login-form.white(ng-submit='submit()')
-  if errMsg
-    p.bg-info=errMsg
+form#login-form(ng-submit='login()')
+  p.bg-info(ng-show='errMsg')="Email or password is incorrect"
   label(for='email')="Email"
   br
-  input#email(name='email', type='email', ng-model='email')
+  input#email(name='email', type='email', ng-model='email', required)
   br
   label(for='password')="Password"
   br
-  input#password(name='password', type='password', ng-model='password')
+  input#password(name='password', type='password', ng-model='password', required)
   br
-  input#remember(name='remember', type='checkbox')
+  input#remember(name='remember', type='checkbox', style='margin-bottom: 15px')
   label(for='remember')="Remember me"
-  br
-  input#forgot(name='forgot', type='checkbox')
-  label(for='forgot', style='margin-bottom: 12px')="Forgot password"
   br
   input.blue-btn(type='submit', value='Log In')
   a.blue-btn(href='/signup')="Sign Up"
+  br
+  a.forgot-password(href='#')="Forgot password"

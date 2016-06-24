@@ -1,15 +1,9 @@
 'use strict';
 
 var app = angular.module('myApp', ['ngRoute']);
-//app.controller('LoginCtrl', [$scope, function($scope) {
-  //$scope.submit = function() {
-    //alert('yo');
-    //$http.get('/api/login?email=' + $scope.email + '&password=' + $scope.password).
-      //success(function(data) {
-        //$scope.results = data;
-      //});
-  //};
-//}]);
+
+app.controller('LoginCtrl', ['$scope', '$rootScope', '$http', '$location', LoginCtrl]);
+
 app.config(function($routeProvider, $locationProvider) {
   $routeProvider.
     when('/', {
@@ -24,8 +18,14 @@ app.config(function($routeProvider, $locationProvider) {
       templateUrl: 'partials/profile',
       controller: GetUserCtrl
     }).
+    when('/signup', {
+      templateUrl: 'partials/signup'
+    }).
     when('/test', {
       templateUrl: 'partials/login'
+    }).
+    when('/logout', {
+      templateUrl: 'partials/home'
     }).
     when('/:link', {
       templateUrl: 'partials/profile',

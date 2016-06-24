@@ -19,50 +19,32 @@ html(lang='en')
     //script(src='../js/maps.min.js')
   body(ng-app='myApp')
     block header
-      header
+      header(ng-controller='LoginCtrl')
         nav.navbar.navbar-default
           div.container
             div.navbar-header
               a.navbar-brand(href='/')="Bandjo"
             div.navbar-right
-              - if (loggedInID) {
-                img(src='{{results.photo}}', style='width:40px; height:40px; border-radius:50%;')
-                a.btn.btn-default.navbar-btn(href='/logout')="Log Out"
-              - } else {
-                a.btn.btn-default.navbar-btn(href='/')="Log In"
-              - }
+              div.dropdown(ng-show='loggedIn')
+                a(role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+                  span.name='{{firstName+" "+lastName}}'
+                  img.profile-pic-small(src='{{loggedInImage}}')
+                  span.caret
+                ul.dropdown-menu
+                  li
+                    a(href='/profile')='Profile'
+                  li.divider(role='separator')
+                  li
+                    a(href='#', ng-click='logout()')='Log Out'
+              div(ng-hide='loggedIn')
+                button.btn.btn-default.navbar-btn(ng-click='goHome()')='Log In'
     block content
       main.container
         div.row
           div.col-sm-4
-            form#login-form.white(action='/login', method='post')
-              if errMsg
-                p.bg-info=errMsg
-              label(for='email')="Email"
-              br
-              input#email(name='email', type='email', value=email)
-              br
-              label(for='password')="Password"
-              br
-              input#password(name='password', type='password')
-              br
-              input#remember(name='remember', type='checkbox')
-              label(for='remember')="Remember me"
-              br
-              input#forgot(name='forgot', type='checkbox')
-              label(for='forgot', style='margin-bottom: 12px')="Forgot password"
-              br
-              input.blue-btn(type='submit', value='Log In')
-              a.blue-btn(href='/signup')="Sign Up"
+            include partials/login
           div.col-sm-8
-            div.white
-              h2="Latest Users"
-              img.img-responsive(src=results.photo, width='100', alt=results.firstName, style='background: black')
-              a(href=results.link)
-                h3=results.firstName+" "+results.lastName
-              p
-                b="Instruments: "
-                //results.instruments
+            h2="What are you doing here?"
     block footer
       footer
         div.container

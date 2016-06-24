@@ -1,22 +1,48 @@
 var ObjectId = require('mongodb').ObjectId;
+var crypto = require('crypto');
+
+exports.autoLogin = function(req, res) {
+  var query = { '_id': new ObjectId(req.session.userID) };
+  var projection = { '_id': 1, 'photo': 1, 'firstName': 1, 'lastName': 1 };
+  req.db.collection('users').findOne(query, projection, function(err, doc) {
+    if (err) {
+      res.send(err);
+    } else {
+      if (doc==null) {
+        res.send('0');
+      } else {
+        req.session.userID = doc._id;
+        res.json(doc);
+      }
+    }
+  });
+};
 
 exports.loginUser = function(req, res) {
   var email = req.body.email;
   var password = req.body.password;
-  var hashedPassword = crypto.createHash("sha1").update(password).digest('hex');
-  var query = { "email": email, "password": hashedPassword };
-  var projection = {};
+  var hashedPassword = crypto.createHash('sha1').update(password).digest('hex');
+  var query = { 'email': email, 'password': hashedPassword };
+  var projection = { '_id': 1, 'photo': 1, 'firstName': 1, 'lastName': 1 };
   req.db.collection('users').findOne(query, projection, function(err, doc) {
     if (err) {
-      res.send(null);
+      res.send(err);
     } else {
-      res.json(doc);
+      if (doc==null) {
+        res.send('0');
+      } else {
+        req.session.userID = doc._id;
+        //res.locals.loggedUserID = doc._id;
+        res.json(doc);
+      }
     }
   });
 };
 
 exports.logoutUser = function(req, res) {
-  req.session.destroy();
+  req.session = null;
+  //res.locals.loggedUserID = null;
+  res.status(200).send('Success');
 };
 
 exports.getUser = function(req, res) {
@@ -31,6 +57,8 @@ exports.getUser = function(req, res) {
     query = {'link': url};
   } else if (email) {
     query = {'email': email};
+  } else {
+    query = {'_id': new ObjectId(req.session.userID)};
   }
   var projection = {'password': 0};
   req.db.collection('users').findOne(query, projection, function(err, doc) {
@@ -45,8 +73,8 @@ exports.getUser = function(req, res) {
 exports.getUserByURL = function(req, res) {
   var link = req.params.link;
   console.log('Getting user by url ' + link);
-  var query = {'link': link};
-  var projection = {'password': 0};
+  var query = { 'link': link };
+  var projection = { 'password': 0 };
   req.db.collection('users').findOne(query, projection, function(err, doc) {
     if (err) {
       res("error");
@@ -56,9 +84,25 @@ exports.getUserByURL = function(req, res) {
   });
 };
 
+exports.getUsers = function(req, res) {
+  if (req.query.genre) {
+    var genres = req.query.genre.split(',');
+  } if (req.query.influence) {
+    var influences = req.query.influence.split(',');
+  } if (req.query.instrument) {
+    var instruments = req.query.instrument.split(',');
+  }
+  //var query = {'genres': {$in: []};
+  //var projection = {'_id': 0, 'firstName': 1, 'lastName': 1, 'photo': 1};
+  //req.db.collection('users').findOne(query, projection, function(err, doc) {
+
+  //});
+  res.status(200).send('Success');
+};
+
 exports.updateUserByID = function(req, res) {
   var u_id = req.params.id;
-  var query = {'_id': new Object(u_id)};
+  var query = { '_id': new Object(u_id) };
   //var update =
   //req.db.collection('users').update(query, )
 };

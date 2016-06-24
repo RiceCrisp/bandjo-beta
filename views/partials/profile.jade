@@ -1,4 +1,7 @@
 block content
+  mixin pencil
+    svg.pencil(width='20' height='20' viewBox='0 0 24 24')
+      path(d='M19.769 9.923l-12.642 12.639-7.127 1.438 1.438-7.128 12.641-12.64 5.69 5.691zm1.414-1.414l2.817-2.82-5.691-5.689-2.816 2.817 5.69 5.692z')
   div.row
     div.col-sm-12
       h2!='{{results.firstName}}' + ' ' + '{{results.lastName}}'
@@ -16,9 +19,8 @@ block content
       section.editable
         header
           h3="Location"
-          - if (edit)
-            svg.pencil(width='20' height='20' viewBox='0 0 24 24')
-              path(d='M19.769 9.923l-12.642 12.639-7.127 1.438 1.438-7.128 12.641-12.64 5.69 5.691zm1.414-1.414l2.817-2.82-5.691-5.689-2.816 2.817 5.69 5.692z')
+            if (edit)
+              +pencil
         div(style='display: flex')
           div(style='flex: 1')
             p!='{{results.address.street}}'+'<br>'+'{{results.address.apt}}'+'<br>'+'{{results.address.city}}'+', '+'{{results.address.state}}'+' '+'{{results.address.zip}}'
@@ -27,30 +29,27 @@ block content
       section.editable
         header
           h3="Instruments"
-          - if (edit)
-            svg.pencil(width='20' height='20' viewBox='0 0 24 24')
-              path(d='M19.769 9.923l-12.642 12.639-7.127 1.438 1.438-7.128 12.641-12.64 5.69 5.691zm1.414-1.414l2.817-2.82-5.691-5.689-2.816 2.817 5.69 5.692z')
+            if (edit)
+              +pencil
         div.instruments
-          ul.boxes(ng-repeat='instrument in results.instruments')
-            li.instrument
+          ul.boxes
+            li.instrument(ng-repeat='instrument in results.instruments')
               p.cap!='<b>'+'{{instrument.name}}'+'</b>'
               p.cap='{{instrument.skill}}'
               p!='{{instrument.years}}'+('{{instrument.years}}'==1 ? " year" : " years")
       section.editable
         header
           h3="Genres"
-          - if (edit)
-            svg.pencil(width='20' height='20' viewBox='0 0 24 24')
-              path(d='M19.769 9.923l-12.642 12.639-7.127 1.438 1.438-7.128 12.641-12.64 5.69 5.691zm1.414-1.414l2.817-2.82-5.691-5.689-2.816 2.817 5.69 5.692z')
+            if (edit)
+              +pencil
         div.genres
-          ul.boxes(ng-repeat='genre in results.genres')
-            li.genre.cap='{{genre}}'
+          ul.boxes
+            li.genre.cap(ng-repeat='genre in results.genres')='{{genre}}'
       section.editable
         header
           h3="Influences"
-          - if (edit)
-            svg.pencil(width='20' height='20' viewBox='0 0 24 24')
-              path(d='M19.769 9.923l-12.642 12.639-7.127 1.438 1.438-7.128 12.641-12.64 5.69 5.691zm1.414-1.414l2.817-2.82-5.691-5.689-2.816 2.817 5.69 5.692z')
+            if (edit)
+              +pencil
         div.influences
-          ul.boxes(ng-repeat='influence in results.influences')
-            li.influence.cap='{{influence}}'
+          ul.boxes
+            li.influence.cap(ng-repeat='influence in results.influences')='{{influence}}'
