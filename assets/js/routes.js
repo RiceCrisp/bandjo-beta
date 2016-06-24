@@ -11,7 +11,7 @@ app.config(function($routeProvider, $locationProvider) {
       controller: LoginCtrl
     }).
     when('/profile', {
-      templateUrl: 'partials/profile',
+      templateUrl: 'partials/edit',
       controller: EditUserCtrl
     }).
     when('/profile/:id', {

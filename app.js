@@ -63,11 +63,6 @@ app.get('/api/logout', api.logoutUser);
 
 app.use('*', function(req, res) {
   res.render('index');
-  /*if (req.session.userID) {
-    res.render('index', {'loggedInID': req.session.userID});
-  } else {
-    res.render('index', {'loggedInID': null});
-  }*/
 });
 
 app.use(function(req, res) {

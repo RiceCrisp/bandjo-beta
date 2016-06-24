@@ -32,7 +32,6 @@ exports.loginUser = function(req, res) {
         res.send('0');
       } else {
         req.session.userID = doc._id;
-        //res.locals.loggedUserID = doc._id;
         res.json(doc);
       }
     }
@@ -41,7 +40,6 @@ exports.loginUser = function(req, res) {
 
 exports.logoutUser = function(req, res) {
   req.session = null;
-  //res.locals.loggedUserID = null;
   res.status(200).send('Success');
 };
 

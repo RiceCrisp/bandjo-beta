@@ -1,0 +1,70 @@
+block content
+  mixin editable(section)
+    svg.pencil(width='20' height='20' viewBox='0 0 24 24', data-toggle='modal', data-target='#'+section+'-modal')&attributes(attributes)
+      path(d='M19.769 9.923l-12.642 12.639-7.127 1.438 1.438-7.128 12.641-12.64 5.69 5.691zm1.414-1.414l2.817-2.82-5.691-5.689-2.816 2.817 5.69 5.692z')
+    div.modal.fade(id=section+'-modal' tabindex='-1', role='dialog', aria-labelledby=section+'Modal')
+      div.modal-dialog.modal-lg
+        div.modal-content
+          div.modal-header
+            button.close(type='button' data-dismiss='modal' aria-label='Close')
+              span(aria-hidden='true')!='&times;'
+            h4.modal-title.cap(id=section+'modal-title')=section
+          div.modal-body
+            block
+  div.row
+    div.col-sm-12
+      h2!='{{results.firstName}}' + ' ' + '{{results.lastName}}'
+  div.row
+    div.col-sm-4
+      section
+        img.img-responsive.profile-pic(src='{{results.photo}}', alt='{{results.firstName}}', style='background: black')
+        +editable('image')(style='position: absolute; top: 1; right: 16px; padding: 3px; margin: 0;', width='26', height='26')
+          p='Image stuff'
+      section
+        header
+          h4="Contacts"
+    div.col-sm-8
+      section.editable
+        header
+          h3="Location"
+            +editable('location')
+              p="Location"
+        div(style='display: flex')
+          div(style='flex: 1')
+            p!='{{results.address.street}}'+'<br>'+'{{results.address.apt}}'+'<br>'+'{{results.address.city}}'+', '+'{{results.address.state}}'+' '+'{{results.address.zip}}'
+          div(style='flex: 1')
+            div#map
+      section.editable
+        header
+          h3="Instruments"
+            +editable('instruments')
+              ul.boxes
+                li.instrument(ng-repeat='instrument in results.instruments')
+                  p.cap!='<b>'+'{{instrument.name}}'+'</b>'
+                  p.cap='{{instrument.skill}}'
+                  p!='{{instrument.years}}'+('{{instrument.years}}'==1 ? " year" : " years")
+        div.instruments
+          ul.boxes
+            li.instrument(ng-repeat='instrument in results.instruments')
+              p.cap!='<b>'+'{{instrument.name}}'+'</b>'
+              p.cap='{{instrument.skill}}'
+              p!='{{instrument.years}}'+('{{instrument.years}}'==1 ? " year" : " years")
+      section.editable
+        header
+          h3="Genres"
+            +editable('genres')
+              ul.boxes
+                li.genre.cap(ng-repeat='genre in results.genres')='{{genre}}'
+        div.genres
+          ul.boxes
+            li.genre.cap(ng-repeat='genre in results.genres')='{{genre}}'
+      section.editable
+        header
+          h3="Influences"
+            +editable('influences')
+              ul.boxes
+                li.influence.cap(ng-repeat='influence in results.influences')='{{influence}}'
+                  span(aria-hidden='true')!='&times;'
+        div.influences
+          ul.boxes
+            li.influence.cap(ng-repeat='influence in results.influences')='{{influence}}'
