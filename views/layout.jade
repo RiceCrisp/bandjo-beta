@@ -11,6 +11,7 @@ html(lang='en')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js', integrity='sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS', crossorigin='anonymous')
     script(src='modules/angular/angular.js')
     script(src='modules/angular-route/angular-route.js')
+    script(src='modules/angular-animate/angular-animate.js')
     //script(src='modules/angular-cookies/angular-cookies.js')
     script(src='assets/js/controllers.js')
     script(src='assets/js/routes.js')
@@ -32,12 +33,21 @@ html(lang='en')
                   span.caret
                 ul.dropdown-menu
                   li
-                    a(href='/profile')='Profile'
+                    a(href='/profile')="Profile"
                   li.divider(role='separator')
                   li
-                    a(href='#', ng-click='logout()')='Log Out'
-              div(ng-hide='loggedIn')
-                button.btn.btn-default.navbar-btn(ng-click='goHome()')='Log In'
+                    a(href='#', ng-click='logout()')="Log Out"
+              div.login(ng-hide='loggedIn')
+                form.form-inline(ng-submit='login()')
+                  div.form-group
+                    label.sr-only(for='loginEmail')="Email"
+                    input#loginEmail.form-control(name='email', type='email', ng-model='email', placeholder='Email', required)
+                  div.form-group
+                    label.sr-only(for='loginPassword')="Password"
+                    input#loginPassword.form-control(name='password', type='password', ng-model='password', placeholder='Password', required)
+                  div.form-group
+                    input.blue-btn(type='submit', value='Log In')
+                  p.login-err(ng-show='errMsg')="Email or password is incorrect"
     block content
       main.container
         div.row

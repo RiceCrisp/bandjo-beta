@@ -19,12 +19,45 @@ function GetUserCtrl($scope, $http, $routeParams) {
 }
 
 function EditUserCtrl($scope, $http) {
+  $scope.selectionArray = [];
   $http.get('/api/user').
     then(function success(res) {
       $scope.results = res.data;
     }, function error(res) {
     }
   );
+  $scope.addinfluences = function() {
+    if ($scope.newinfluences) {
+      $http.post('/api/influences?add=' + $scope.newinfluences).
+        then(function success(res) {
+          $scope.results.influences.push($scope.newinfluences);
+          $scope.newinfluences = '';
+        }, function error(res) {
+        }
+      );
+    }
+  };
+  $scope.deleteinfluences = function() {
+    $http.delete('/api/influences?delete=' + $scope.influences).
+      then(function success(res) {
+        alert(res);
+        $scope.selectionArray.forEach(function(item) {
+          var index = $scope.results.influences.indexOf(item);
+          $scope.results.influences.splice(index, 1);
+        });
+        $scope.selectionArray = [];
+      }, function error(res) {
+      }
+    );
+  };
+  $scope.selectinfluences = function selectinfluences(selection) {
+    var index = $scope.selectionArray.indexOf(selection);
+    if (index>=0) {
+      $scope.selectionArray.splice(index, 1);
+    } else {
+      $scope.selectionArray.push(selection);
+    }
+  };
 }
 
 function LoginCtrl($scope, $rootScope, $http, $location) {
@@ -58,11 +91,13 @@ function LoginCtrl($scope, $rootScope, $http, $location) {
           $scope.errMsg = true;
           $scope.password = '';
         } else {
+          $location.path('/profile');
           $rootScope.loggedIn = true;
           $rootScope.firstName = res.data.firstName;
           $rootScope.lastName = res.data.lastName;
           $rootScope.loggedInImage = res.data.photo;
-          $location.path('/profile');
+          $scope.errMsg = false;
+          $scope.password = '';
         }
       }, function error(res) {
       }

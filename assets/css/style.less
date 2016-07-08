@@ -40,30 +40,22 @@ input[type='checkbox'] {
   padding: 5px 8px;
   text-decoration: none;
   display: inline-block;
-  margin-right: 15px;
   box-sizing: content-box;
-  transition: background 0.2s, color 0.2s;
+  transition: all 0.2s;
   &:hover {
     background: @lightblue;
     color: #fff;
     text-decoration: none;
-    transition: background 0.2s, color 0.2s;
   }
 }
 
 input[type=email], input[type=password], input[type=text] {
   margin: 0 0 12px 0;
-  border: 1px solid #ddd;
   padding: 2px 5px;
   line-height: 160%;
   width: 100%;
   max-width: 250px;
-}
-
-.bg-info {
-  padding: 10px;
-  background: @lightblue;
-  color: #fff;
+  border: 1px solid @lightgray;
 }
 
 /* Header */
@@ -78,24 +70,54 @@ input[type=email], input[type=password], input[type=text] {
 }
 
 nav div.navbar-right {
-  height: 50px;
   div.dropdown > a {
     display: inline-block;
     height: 50px;
     line-height: 50px;
     color: @darkgray;
     padding: 0 10px;
-    transition: background 0.2s;
+    transition: all 0.2s;
     &:hover {
       text-decoration: none;
       background: @lightgray;
-      transition: background 0.2s;
     }
     span.name {
       margin-right: 10px;
     }
     img {
       margin-right: 10px;
+    }
+  }
+  div.login {
+    @media (min-width: 768px) {
+      margin-top: 9px;
+    }
+    form {
+      height: 100%;
+      position: relative;
+      div.form-group {
+        vertical-align: none;
+        input {
+          font-size: 14px;
+          padding: 5px 10px;
+          &[type='email'] {
+            margin: 0 10px 0 0;
+            border: 1px solid #lightgray;
+            border-radius: 0;
+          }
+          &[type='password'] {
+            margin: 0 10px 0 0;
+            border: 1px solid #lightgray;
+            border-radius: 0;
+          }
+        }
+      }
+      .login-err {
+        position: absolute;
+        padding: 5px;
+        background: @lightblue;
+        color: #fff;
+      }
     }
   }
   ul.dropdown-menu {
@@ -140,32 +162,36 @@ img.profile-pic-small {
   height: 34px;
 }
 
-section {
-  margin-bottom: 20px;
-  header {
-    border-bottom: 1px solid #eee;
-    margin-bottom: 10px;
-    h2, h3, h4 {
-      display: inline-block;
-      margin: 0 15px 0 0;
+div.tools {
+  * {
+    vertical-align: middle;
+  }
+  .ng-hide {
+    width: 0px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  input {
+    margin: 0;
+    border: 2px solid @lightblue;
+    width: 250px;
+    padding-left: 5px;
+    padding-right: 5px;
+    transition: all 0.5s;
+  }
+  svg.plus,svg.trash {
+    background: @lightblue;
+    margin-right: 20px;
+    padding: 5px;
+    width: 33px;
+    height: 33px;
+    transition: all 0.2s;
+    &:hover {
+      cursor: pointer;
     }
-  }
-}
-
-svg.pencil {
-  background: #fff;;
-  margin-left: 20px;
-  &:hover {
-    cursor: pointer;
-  }
-  &:hover path {
-    fill: @darkgray;
-    transition: fill 0.2s;
-    cursor: pointer;
-  }
-  path {
-    fill: @darkgray + #333;
-    transition: fill 0.2s;
+    path {
+      fill: #fff;
+    }
   }
 }
 
@@ -177,34 +203,54 @@ div.instruments {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-}
-
-div.instrument {
-  border: 1px solid @lightgray;
-  width: 120px;
-  padding: 5px;
-  text-align: center;
-}
-
-ul.boxes {
-  padding: 0;
-  display: flex;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  li {
-    list-style: none;
-    display: inline-block;
-    min-width: 100px;
+  div.instrument {
     border: 1px solid @lightgray;
-    margin: 0 10px 10px 0;
-    padding: 10px;
+    width: 120px;
+    padding: 5px;
     text-align: center;
-    background: #fff;
-    transition: background 0.2s;
-    &:hover {
-      cursor: pointer;
+  }
+}
+
+section {
+  margin-bottom: 30px;
+  header {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
+    h2, h3, h4 {
+      display: inline-block;
+      margin: 0 15px 0 0;
+    }
+  }
+  ul.boxes {
+    padding: 0;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    li {
+      list-style: none;
+      display: inline-block;
+      margin: 0 10px 10px 0;
+      text-align: center;
+    }
+  }
+}
+
+section.editable ul.boxes li {
+  padding: 0;
+  input {
+    display: none;
+    &:checked+label {
       background: @lightgray;
-      transition: background 0.2s;
+    }
+  }
+  label {
+    padding: 10px;
+    font-weight: normal;
+    border: 1px solid @lightgray;
+    min-width: 100px;
+    transition: all 0.2s;
+    &:hover {
+      background: @lightgray;
     }
   }
 }

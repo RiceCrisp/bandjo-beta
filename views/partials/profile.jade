@@ -10,7 +10,7 @@ block content
         header
           h4="Contacts"
     div.col-sm-8
-      section.editable
+      section
         header
           h3="Location"
         div(style='display: flex')
@@ -18,7 +18,7 @@ block content
             p!='{{results.address.street}}'+'<br>'+'{{results.address.apt}}'+'<br>'+'{{results.address.city}}'+', '+'{{results.address.state}}'+' '+'{{results.address.zip}}'
           div(style='flex: 1')
             div#map
-      section.editable
+      section
         header
           h3="Instruments"
         div.instruments
@@ -27,13 +27,13 @@ block content
               p.cap!='<b>'+'{{instrument.name}}'+'</b>'
               p.cap='{{instrument.skill}}'
               p!='{{instrument.years}}'+('{{instrument.years}}'==1 ? " year" : " years")
-      section.editable
+      section
         header
           h3="Genres"
         div.genres
           ul.boxes
             li.genre.cap(ng-repeat='genre in results.genres')='{{genre}}'
-      section.editable
+      section
         header
           h3="Influences"
         div.influences
