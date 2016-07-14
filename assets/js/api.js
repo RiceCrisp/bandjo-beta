@@ -74,6 +74,33 @@ exports.getUser = function(req, res) {
   });
 };
 
+exports.addGenres = function(req, res) {
+  var newGenre = req.query.add;
+  var query = {'_id': new ObjectId(req.session.userID)};
+  var operation = {$addToSet: {'genres': newGenre}};
+  req.db.collection('users').updateOne(query, operation, function(err, results) {
+    if (err) {
+      // this isn't the right way of doing this
+      res("error");
+    } else {
+      res.json(results);
+    }
+  });
+};
+
+exports.deleteGenres = function(req, res) {
+  var genres = req.query.delete.split(',');
+  var query = {'_id': new ObjectId(req.session.userID)};
+  var operation = {$pullAll: {'genres': genres}};
+  req.db.collection('users').updateOne(query, operation, function(err, results) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(results);
+    }
+  });
+};
+
 exports.addInfluences = function(req, res) {
   var newInfluence = req.query.add;
   var query = {'_id': new ObjectId(req.session.userID)};
@@ -89,9 +116,9 @@ exports.addInfluences = function(req, res) {
 };
 
 exports.deleteInfluences = function(req, res) {
-  var influences = req.query.delete;
+  var influences = req.query.delete.split(',');
   var query = {'_id': new ObjectId(req.session.userID)};
-  var operation = {$pullAll: {'influences': [influences]}};
+  var operation = {$pullAll: {'influences': influences}};
   req.db.collection('users').updateOne(query, operation, function(err, results) {
     if (err) {
       console.log(err);

@@ -60,8 +60,9 @@ app.get('/api/autologin', api.autoLogin);
 app.post('/api/login', api.loginUser);
 app.get('/api/logout', api.logoutUser);
 app.post('/api/influences', api.addInfluences);
-app.delete('/api/influences', api.deleteInfluences)
-//app.get('/api/genre', api.getUsersByGenre);
+app.delete('/api/influences', api.deleteInfluences);
+app.post('/api/genre', api.addGenres);
+app.delete('/api/genre', api.deleteGenres);
 
 app.use('*', function(req, res) {
   res.render('index');
