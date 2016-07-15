@@ -19,6 +19,7 @@ function GetUserCtrl($scope, $http, $routeParams) {
 }
 
 function EditUserCtrl($scope, $http) {
+  $scope.newinfluences = '';
   $scope.selectionArray = [];
   $scope.matches = [];
   $http.get('/api/user').
@@ -28,10 +29,13 @@ function EditUserCtrl($scope, $http) {
     }
   );
   $scope.checkinfluences = function($event) {
+    if ($scope.newinfluences=="") {
+      $scope.matches = [];
+    }
     if ($event.keyCode==13) {
       $scope.addinfluences();
     } else {
-      $http.get('http://ws.audioscrobbler.com/2.0/?method=artist.search&limit=10&artist=' + $scope.newinfluences + '&api_key=4dd5d21f3a4234246c53f582afcdec55&format=json').
+      $http.get('http://ws.audioscrobbler.com/2.0/?method=artist.search&limit=5&artist=' + $scope.newinfluences + '&api_key=4dd5d21f3a4234246c53f582afcdec55&format=json').
         then(function success(res) {
           $scope.matches = res.data.results.artistmatches.artist;
         }, function error(res) {
@@ -45,15 +49,19 @@ function EditUserCtrl($scope, $http) {
         then(function success(res) {
           $scope.results.influences.push($scope.newinfluences);
           $scope.newinfluences = '';
+          $scope.matches = [];
         }, function error(res) {
         }
       );
     }
   };
+  $scope.updatenewinfluence = function(newVar) {
+    $scope.newinfluences = newVar;
+    $scope.addinfluences();
+  }
   $scope.deleteinfluences = function() {
     $http.delete('/api/influences?delete=' + $scope.selectionArray).
       then(function success(res) {
-        alert(JSON.stringify(res));
         $scope.selectionArray.forEach(function(item) {
           var index = $scope.results.influences.indexOf(item);
           $scope.results.influences.splice(index, 1);

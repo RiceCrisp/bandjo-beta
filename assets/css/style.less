@@ -163,6 +163,7 @@ img.profile-pic-small {
 }
 
 div.tools {
+  position: relative;
   * {
     vertical-align: middle;
   }
@@ -196,7 +197,7 @@ div.tools {
 }
 
 div#map {
-  height: 100px;
+  height: 200px;
 }
 
 div.instruments {
@@ -251,6 +252,31 @@ section.editable ul.boxes li {
     transition: all 0.2s;
     &:hover {
       background: @lightgray;
+    }
+  }
+}
+
+ul.influence-suggestions {
+  position: absolute;
+  display: inline-block;
+  padding: 0;
+  width: 283px;
+  margin: 0;
+  bottom: 33px;
+  box-shadow: 0 0 8px @lightgray;
+  li {
+    background: #fff;
+    opacity: 0.9;
+    list-style: none;
+    padding: 5px;
+    border-left: 1px solid @lightgray;
+    border-top: 1px solid @lightgray;
+    border-right: 1px solid @lightgray;
+    transition: all 0.2s;
+    &:hover {
+      cursor: pointer;
+      background: @lightgray;
+      opacity: 1;
     }
   }
 }

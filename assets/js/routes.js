@@ -4,6 +4,12 @@ var app = angular.module('myApp', ['ngRoute', 'ngAnimate']);
 
 app.controller('LoginCtrl', ['$scope', '$rootScope', '$http', '$location', LoginCtrl]);
 
+app.filter('reverse', function() {
+  return function(items) {
+    return items.slice().reverse();
+  };
+});
+
 app.config(function($routeProvider, $locationProvider) {
   $routeProvider.
     when('/', {

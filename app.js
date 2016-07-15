@@ -28,10 +28,6 @@ app.use('/modules', express.static(__dirname + '/node_modules'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.locals.ucfirst = function(value){
-    return value.charAt(0).toUpperCase() + value.slice(1);
-};
-
 MongoClient.connect(dbUrl, function(err, db) {
   "use strict";
   assert.equal(null, err);
