@@ -90,7 +90,7 @@ exports.addGenres = function(req, res) {
 
 exports.deleteGenres = function(req, res) {
   var genres = req.query.delete.split(',');
-  var query = {'_id': new ObjectId(req.session.userID)};
+  var query = {$text: {$search: genres}};
   var operation = {$pullAll: {'genres': genres}};
   req.db.collection('users').updateOne(query, operation, function(err, results) {
     if (err) {
@@ -100,6 +100,11 @@ exports.deleteGenres = function(req, res) {
     }
   });
 };
+
+exports.getGenres = function(req, res) {
+  var genre = req.query.get;
+  var query =
+}
 
 exports.addInfluences = function(req, res) {
   var newInfluence = req.query.add;

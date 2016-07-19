@@ -62,10 +62,12 @@ block content
         div.genres
           ul.boxes
             li.genre(ng-repeat='genre in results.genres')
-              input(type='checkbox', id='{{genre}}', name='genres', value='{{genre}}')
+              input(type='checkbox', id='{{genre}}', name='genres', value='{{genre}}', ng-click='selectgenres(genre)')
               label.cap(for='{{genre}}')='{{genre}}'
         div.tools
-          +trash
+          +trash('genres')
+          ul.influence-suggestions
+            li(ng-repeat='match in genreMatches | reverse track by $index', ng-click="updatenewgenre(match.name)")='{{match.name}}'
           +plus('genres')
       section.editable
         header
@@ -78,6 +80,6 @@ block content
         div.tools
           +trash('influences')
           ul.influence-suggestions
-            li(ng-repeat='match in matches | reverse track by $index', ng-click="updatenewinfluence(match.name)")='{{match.name}}'
+            li(ng-repeat='match in influenceMatches | reverse track by $index', ng-click="updatenewinfluence(match.name)")='{{match.name}}'
           +plus('influences')
           
